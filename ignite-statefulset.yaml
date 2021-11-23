@@ -1,0 +1,84 @@
+# An example of a Kubernetes configuration for Ignite pods deployment.
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  # Custom Ignite cluster's name.
+  name: ignite
+spec:
+  # A number of Ignite pods to be started by Kubernetes initially.
+  replicas: 2
+  serviceName: "ignite"
+  selector:
+    matchLabels:
+      app: ignite
+  # this is the default, but no harm in being explict
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        # This label has to be added to the selector's section of 
+        # ignite-service.yaml so that the Kubernetes Ignite lookup service
+        # can easily track all Ignite pods available deployed so far.
+        app: ignite
+    spec:
+      volumes:
+        # Custom name for the storage that holds Ignite's configuration
+        # which is example-kube.xml.
+        - name: ignite-config
+          configMap:
+            name: ignite-config
+            items:
+            - key: ignite-config.xml
+              path: ignite-config.xml
+        - name: ignite-licence
+          configMap:
+            name: ignite-licence
+            items:
+            - key: gridgain-license.xml
+              path: gridgain-license.xml
+#        - name: ignite-snapshots
+#          hostPath:
+#              path: /snapshot
+      containers:
+      - name: ignite-node
+        image: gridgain/ultimate:8.8.10-openjdk11-slim
+        env:
+        - name: JVM_OPTS
+          value: -server -Djava.net.preferIPv4Stack=true -XX:+AlwaysPreTouch -XX:+UseG1GC -XX:+ScavengeBeforeFullGC -XX:+DisableExplicitGC -Djdk.tls.client.protocols=TLSv1.2
+        - name: OPTION_LIBS
+          value: ignite-kubernetes,ignite-rest-http,control-center-agent
+        - name: CONFIG_URI
+          value: file:///ignite/config/ignite-config.xml
+        ports:
+        - containerPort: 10800 # JDBC port
+        - containerPort: 11211 # REST port number.
+        - containerPort: 47100 # communication SPI port number.
+        - containerPort: 47500 # discovery SPI port number.
+        - containerPort: 49112 # JMX port number.
+        volumeMounts:
+        - mountPath: /ignite/config
+          name: ignite-config
+        - mountPath: /ignite/work
+          name: ignite-storage
+        - mountPath: /ignite/licence
+          name: ignite-licence
+#        - mountPath: /ignite/snapshots
+#          name: ignite-snapshots
+        livenessProbe:
+          httpGet:
+            path: /ignite?cmd=version
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+  volumeClaimTemplates:
+    - metadata:
+        name: ignite-storage
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 1Gi
+        selector:
+          matchLabels:
+            app: ignite

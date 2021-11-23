@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util.xsd">
+
+<bean id="ignite.cfg"
+    class="org.apache.ignite.configuration.IgniteConfiguration">
+
+    <property name="workDirectory" value="/ignite/work" />
+    <property name="shutdownPolicy" value="GRACEFUL" />
+
+    <!-- GridGain configuration bean. -->
+    <property name="pluginConfigurations">
+        <list>
+            <!-- GridGain plugin configuration bean. -->
+            <bean class="org.gridgain.grid.configuration.GridGainConfiguration">
+                <!-- For example, this is how rolling updates are enabled. -->
+                <property name="rollingUpdatesEnabled" value="true"/>
+                <property name="licenseUrl" value="/ignite/licence/gridgain-license.xml"/>
+                <property name="dataCenterId" value="1"/>
+                <property name="snapshotConfiguration">
+                  <bean class="org.gridgain.grid.configuration.SnapshotConfiguration"/>
+                </property>
+            </bean>
+        </list>
+    </property>
+
+    <property name="dataStorageConfiguration">
+        <bean class="org.apache.ignite.configuration.DataStorageConfiguration">
+            <property name="metricsEnabled" value="true"/>
+            <property name="defaultWarmUpConfiguration">
+                <bean class="org.apache.ignite.configuration.LoadAllWarmUpConfiguration"/>
+            </property>
+            <property name="defaultDataRegionConfiguration">
+                <bean class="org.apache.ignite.configuration.DataRegionConfiguration">
+                    <property name="persistenceEnabled" value="true"/>
+                    <property name="metricsEnabled" value="true"/>
+                </bean>
+            </property>
+        </bean>
+    </property>
+
+    <property name="tracingSpi">
+      <bean id="opencensus" class="org.apache.ignite.spi.tracing.opencensus.OpenCensusTracingSpi"/>
+    </property>
+
+    <property name="discoverySpi">
+        <bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
+        		<property name="ipFinder">
+            		<bean
+class="org.apache.ignite.spi.discovery.tcp.ipfinder.kubernetes.TcpDiscoveryKubernetesIpFinder">
+                      <property name="namespace" value="ignite"/>
+            		</bean>
+            </property>
+        </bean>
+    </property>
+</bean>
+</beans>
