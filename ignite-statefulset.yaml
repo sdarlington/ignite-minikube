@@ -37,19 +37,26 @@ spec:
             items:
             - key: gridgain-license.xml
               path: gridgain-license.xml
-#        - name: ignite-snapshots
-#          hostPath:
-#              path: /snapshot
       containers:
       - name: ignite-node
-        image: gridgain/ultimate:8.8.10-openjdk11-slim
+        image: gridgain/ultimate:8.8.27-openjdk11-slim
         env:
+        - name: IGNITE_QUIET
+          value: "false"
         - name: JVM_OPTS
           value: -server -Djava.net.preferIPv4Stack=true -XX:+AlwaysPreTouch -XX:+UseG1GC -XX:+ScavengeBeforeFullGC -XX:+DisableExplicitGC -Djdk.tls.client.protocols=TLSv1.2
         - name: OPTION_LIBS
           value: ignite-kubernetes,ignite-rest-http,control-center-agent
         - name: CONFIG_URI
           value: file:///ignite/config/ignite-config.xml
+        - name: NODE_HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: IGNITE_OVERRIDE_CONSISTENT_ID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
         ports:
         - containerPort: 10800 # JDBC port
         - containerPort: 11211 # REST port number.
