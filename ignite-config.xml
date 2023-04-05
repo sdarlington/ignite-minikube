@@ -31,7 +31,31 @@
             </bean>
         </list>
     </property>
+    
+    <!-- Compute management with Control Center -->
+    <property name="collisionSpi">
+        <bean class="org.apache.ignite.spi.collision.priorityqueue.PriorityQueueCollisionSpi">
+            <!-- Change the parallel job number if needed.
+                 Default is number of cores times 2. -->
+            <property name="parallelJobsNumber" value="5"/>
 
+            <!-- Change the attribute key for tasks.
+                 This key is used to look up task priorities from task context.
+                 By default, "grid.task.priority" is used. -->
+            <property name="priorityAttributeKey" value="grid.task.priority"/>
+
+            <!-- Change the attribute key for jobs.
+                 This key is used to look up job priorities from job context.
+                 By default, "grid.job.priority" is used. -->
+            <property name="jobPriorityAttributeKey" value="grid.job.priority"/>
+
+            <!-- Set the default job priority.
+                 By default is set to 0. -->
+            <property name="defaultPriority" value="10"/>
+        </bean>
+    </property>
+
+    <!-- Enable persistence -->
     <property name="dataStorageConfiguration">
         <bean class="org.apache.ignite.configuration.DataStorageConfiguration">
             <property name="metricsEnabled" value="true"/>
