@@ -67,11 +67,17 @@ spec:
         - mountPath: /ignite/config
           name: ignite-config
         - mountPath: /ignite/work
+          name: ignite-work
+        - mountPath: /ignite/storage
           name: ignite-storage
+        - mountPath: /ignite/wal
+          name: ignite-wal
+        - mountPath: /ignite/walarchive
+          name: ignite-walarchive
         - mountPath: /ignite/licence
           name: ignite-licence
-#        - mountPath: /ignite/snapshots
-#          name: ignite-snapshots
+        - mountPath: /ignite/snapshots
+          name: ignite-snapshots
         livenessProbe:
           httpGet:
             path: /ignite?cmd=version
@@ -80,12 +86,52 @@ spec:
           periodSeconds: 10
   volumeClaimTemplates:
     - metadata:
+        name: ignite-work
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 512Mi
+        selector:
+          matchLabels:
+            app: ignite
+    - metadata:
         name: ignite-storage
       spec:
         accessModes: [ "ReadWriteOnce" ]
         resources:
           requests:
+            storage: 5Gi
+        selector:
+          matchLabels:
+            app: ignite
+    - metadata:
+        name: ignite-wal
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
             storage: 1Gi
+        selector:
+          matchLabels:
+            app: ignite
+    - metadata:
+        name: ignite-walarchive
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 3Gi
+        selector:
+          matchLabels:
+            app: ignite
+    - metadata:
+        name: ignite-snapshots
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 5Gi
         selector:
           matchLabels:
             app: ignite

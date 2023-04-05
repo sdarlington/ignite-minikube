@@ -24,7 +24,9 @@
                 <property name="licenseUrl" value="/ignite/licence/gridgain-license.xml"/>
                 <property name="dataCenterId" value="1"/>
                 <property name="snapshotConfiguration">
-                  <bean class="org.gridgain.grid.configuration.SnapshotConfiguration"/>
+                  <bean class="org.gridgain.grid.configuration.SnapshotConfiguration">
+                      <property name="snapshotsPath" value="/ignite/snapshots"/>
+                  </bean>
                 </property>
             </bean>
         </list>
@@ -36,6 +38,13 @@
             <property name="defaultWarmUpConfiguration">
                 <bean class="org.apache.ignite.configuration.LoadAllWarmUpConfiguration"/>
             </property>
+            
+            <property name="storagePath" value="/ignite/storage"/>
+            <property name="walPath" value="/ignite/wal"/>
+            <property name="walArchivePath" value="/ignite/walarchive"/>
+            
+            <property name="walCompactionLevel" value="7"/>
+            
             <property name="defaultDataRegionConfiguration">
                 <bean class="org.apache.ignite.configuration.DataRegionConfiguration">
                     <property name="persistenceEnabled" value="true"/>
