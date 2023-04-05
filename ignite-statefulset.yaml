@@ -37,6 +37,9 @@ spec:
             items:
             - key: gridgain-license.xml
               path: gridgain-license.xml
+        - name: ignite-secrets
+          secret:
+            secretName: ignite-credentials
       containers:
       - name: ignite-node
         image: gridgain/ultimate:8.8.27-openjdk11-slim
@@ -49,7 +52,7 @@ spec:
           value: ignite-kubernetes,ignite-rest-http,control-center-agent
         - name: CONFIG_URI
           value: file:///ignite/config/ignite-config.xml
-        - name: NODE_HOSTNAME
+        - name: IGNITE_NODE_HOSTNAME
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
@@ -78,6 +81,9 @@ spec:
           name: ignite-licence
         - mountPath: /ignite/snapshots
           name: ignite-snapshots
+        - mountPath: /ignite/secrets
+          readOnly: true
+          name: ignite-secrets
         livenessProbe:
           httpGet:
             path: /ignite?cmd=version
