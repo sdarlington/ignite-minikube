@@ -17,9 +17,7 @@
     <!-- GridGain configuration bean. -->
     <property name="pluginConfigurations">
         <list>
-            <!-- GridGain plugin configuration bean. -->
             <bean class="org.gridgain.grid.configuration.GridGainConfiguration">
-                <!-- For example, this is how rolling updates are enabled. -->
                 <property name="rollingUpdatesEnabled" value="true"/>
                 <property name="licenseUrl" value="/ignite/licence/gridgain-license.xml"/>
                 <property name="dataCenterId" value="1"/>
@@ -78,10 +76,12 @@
         </bean>
     </property>
 
+    <!-- Enable tracing -->
     <property name="tracingSpi">
       <bean id="opencensus" class="org.apache.ignite.spi.tracing.opencensus.OpenCensusTracingSpi"/>
     </property>
 
+    <!-- Use Kubernetes discovery -->
     <property name="discoverySpi">
         <bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
         		<property name="ipFinder">
