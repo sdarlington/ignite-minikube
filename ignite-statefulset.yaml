@@ -42,7 +42,7 @@ spec:
             secretName: ignite-credentials
       containers:
       - name: ignite-node
-        image: gridgain/ultimate:8.8.27-openjdk11-slim
+        image: gridgain/ultimate:8.8.28-openjdk17-slim
         resources:
           limits:
             memory: 1536Mi
