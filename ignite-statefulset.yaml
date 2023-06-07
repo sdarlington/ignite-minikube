@@ -37,9 +37,6 @@ spec:
             items:
             - key: gridgain-license.xml
               path: gridgain-license.xml
-        - name: ignite-secrets
-          secret:
-            secretName: ignite-credentials
       containers:
       - name: ignite-node
         image: gridgain/ultimate:8.8.28-openjdk17-slim
@@ -66,6 +63,26 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
+        - name: GRIDGAIN_SERVER_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: ignite-credentials
+              key: serverusername
+        - name: GRIDGAIN_SERVER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: ignite-credentials
+              key: serverpassword
+        - name: GRIDGAIN_CLIENT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: ignite-credentials
+              key: clientusername
+        - name: GRIDGAIN_CLIENT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: ignite-credentials
+              key: clientpassword
         ports:
         - containerPort: 10800 # JDBC port
         - containerPort: 11211 # REST port number.
@@ -87,9 +104,6 @@ spec:
           name: ignite-licence
         - mountPath: /ignite/snapshots
           name: ignite-snapshots
-        - mountPath: /ignite/secrets
-          readOnly: true
-          name: ignite-secrets
         livenessProbe:
           httpGet:
             path: /ignite?cmd=version

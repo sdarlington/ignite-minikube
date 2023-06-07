@@ -8,7 +8,7 @@ kubectl create -f ignite-service.yaml -n ignite
 kubectl create -f ignite-serviceaccount.yaml -n ignite
 kubectl create configmap ignite-config --from-file=ignite-config.xml -n ignite
 kubectl create configmap ignite-licence --from-file=gridgain-license.xml -n ignite
-kubectl create secret generic ignite-credentials --from-file=credentials.properties -n ignite
+kubectl apply -n ignite -f ignite-credentials.yaml
 kubectl apply -f ignite-statefulset.yaml -n ignite
 
 minikube tunnel

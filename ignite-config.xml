@@ -8,16 +8,16 @@
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 
-<context:property-placeholder location="file:///ignite/secrets/credentials.properties" ignore-resource-not-found="false"/>
+<context:property-placeholder ignore-resource-not-found="false"/>
 
 <bean class="org.apache.ignite.plugin.security.SecurityCredentials" id="server.cred">
-	<constructor-arg value="${serverusername}"/>
-	<constructor-arg value="${serverpassword}"/>
+	<constructor-arg value="${GRIDGAIN_SERVER_USERNAME}"/>
+	<constructor-arg value="${GRIDGAIN_SERVER_PASSWORD}"/>
 </bean>
 
 <bean class="org.apache.ignite.plugin.security.SecurityCredentials" id="client.cred">
-	<constructor-arg value="${clientusername}"/>
-	<constructor-arg value="${clientpassword}"/>
+	<constructor-arg value="${GRIDGAIN_CLIENT_USERNAME}"/>
+	<constructor-arg value="${GRIDGAIN_CLIENT_PASSWORD}"/>
 </bean>
 
 <bean id="ignite.cfg"
@@ -53,7 +53,7 @@
                                         <!-- server.cred credentials and associated permissions (everything is allowed) -->
                                         <entry key-ref="server.cred" value="{defaultAllow:true}"/>
                                         <!-- client.cred credentials and associated permissions (only cache reads are allowed) -->
-                                        <entry key-ref="client.cred" value="{defaultAllow:false, {cache:'*',permissions:['CACHE_READ']}}"/>
+                                        <entry key-ref="client.cred" value="{defaultAllow:false, {cache:'PERSON',permissions:['CACHE_READ','CACHE_PUT', 'CACHE_REMOVE', 'CACHE_CREATE']}}"/>
                                     </map>
                                 </constructor-arg>
                             </bean>
@@ -103,9 +103,20 @@
             
             <property name="defaultDataRegionConfiguration">
                 <bean class="org.apache.ignite.configuration.DataRegionConfiguration">
+                    <property name="name" value="DefaultRegion"/>
                     <property name="persistenceEnabled" value="true"/>
                     <property name="metricsEnabled" value="true"/>
                 </bean>
+            </property>
+            
+            <property name="dataRegionConfigurations">
+              <list>
+                <bean class="org.apache.ignite.configuration.DataRegionConfiguration">
+                    <property name="name" value="MemoryOnlyRegion"/>
+                    <property name="persistenceEnabled" value="false"/>
+                    <property name="metricsEnabled" value="true"/>
+                </bean>
+              </list>
             </property>
         </bean>
     </property>
