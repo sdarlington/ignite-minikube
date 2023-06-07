@@ -16,9 +16,6 @@ spec:
       name: tcp-communication
     - port: 47500
       name: tcp-discovery
-    - port: 8080
-      name: http-rest
-      targetPort: 8080
   selector:
     # Must be equal to one of the labels set in Ignite pods'
     # deployement configuration.

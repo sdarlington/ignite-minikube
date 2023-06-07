@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: ignite-client
+ namespace: ignite
+spec:
+ selector:
+   matchLabels:
+     app: ignite
+     type: client
+ replicas: 1
+ template:
+   metadata:
+     labels:
+       app: ignite
+       type: client
+   spec:
+     containers:
+     - name: ignite-client
+       image: ignite-client:0.0.1-SNAPSHOT
+       imagePullPolicy: Never
+       ports:
+       - containerPort: 8080
+       env:
+       - name: ignite-client.addresses
+         value: ignite.ignite.svc.cluster.local:10800
+       - name: ignite-client.username
+         valueFrom:
+           secretKeyRef:
+             name: ignite-credentials
+             key: clientusername
+       - name: ignite-client.userpassword
+         valueFrom:
+           secretKeyRef:
+             name: ignite-credentials
+             key: clientpassword
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ignite-client
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8080
+      name: web
+  selector:
+    app: ignite
+    type: client

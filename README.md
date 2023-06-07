@@ -10,6 +10,7 @@ kubectl create configmap ignite-config --from-file=ignite-config.xml -n ignite
 kubectl create configmap ignite-licence --from-file=gridgain-license.xml -n ignite
 kubectl apply -n ignite -f ignite-credentials.yaml
 kubectl apply -f ignite-statefulset.yaml -n ignite
+kubectl apply -f ignite-client.yaml -n ignite
 
 minikube tunnel
 
@@ -27,4 +28,37 @@ minikube dashboard
 minikube stop
 
 minikube delete
+```
+
+Example calling the client program, using [httpie](https://httpie.io/cli):
+
+```
+$ http POST http://localhost/person/ id=10 name=Jeremy height=180
+HTTP/1.1 200 
+Connection: keep-alive
+Content-Type: application/json
+Date: Wed, 07 Jun 2023 16:59:01 GMT
+Keep-Alive: timeout=60
+Transfer-Encoding: chunked
+
+{
+    "height": 180,
+    "id": 10,
+    "name": "Jeremy"
+}
+
+
+$ http http://localhost/person/10
+HTTP/1.1 200 
+Connection: keep-alive
+Content-Type: application/json
+Date: Wed, 07 Jun 2023 16:59:11 GMT
+Keep-Alive: timeout=60
+Transfer-Encoding: chunked
+
+{
+    "height": 180,
+    "id": 10,
+    "name": "Jeremy"
+}
 ```
