@@ -15,7 +15,7 @@
 	<description>Spring Boot Ignite Client</description>
 	<properties>
 		<java.version>11</java.version>
-		<gridgain.version>8.8.27</gridgain.version>
+		<gridgain.version>8.8.30</gridgain.version>
 	</properties>
 	<repositories>
 		 <repository>
