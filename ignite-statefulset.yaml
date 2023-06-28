@@ -37,6 +37,7 @@ spec:
             items:
             - key: gridgain-license.xml
               path: gridgain-license.xml
+      terminationGracePeriodSeconds: 60000
       containers:
       - name: ignite-node
         image: gridgain/ultimate:8.8.30-openjdk17-slim
@@ -46,6 +47,7 @@ spec:
             cpu: 1
         securityContext:
           allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
         env:
         - name: IGNITE_QUIET
           value: "false"
