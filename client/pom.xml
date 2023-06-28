@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.10</version>
+		<version>2.7.12</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.gridgain.ps.k8s</groupId>
@@ -16,6 +16,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<gridgain.version>8.8.30</gridgain.version>
+		<ignite-spring-data-ext.version>2.0.0</ignite-spring-data-ext.version>
 	</properties>
 	<repositories>
 		 <repository>
@@ -31,6 +32,19 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-autoconfigure</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ignite</groupId>
+			<artifactId>ignite-spring-data-ext</artifactId>
+			<version>${ignite-spring-data-ext.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-commons</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.ignite</groupId>

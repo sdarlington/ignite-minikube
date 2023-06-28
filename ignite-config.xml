@@ -25,6 +25,37 @@
 
     <property name="workDirectory" value="/ignite/work" />
     <property name="shutdownPolicy" value="GRACEFUL" />
+    
+    <property name="cacheConfiguration">
+      <list>
+        <bean class="org.apache.ignite.configuration.CacheConfiguration">
+          <property name="name" value="PERSON"/>
+          <property name="cacheMode" value="PARTITIONED"/>
+          <property name="backups" value="1"/>
+          <property name="queryEntities">
+             <list>
+               <bean class="org.apache.ignite.cache.QueryEntity">
+                 <property name="keyType" value="java.lang.Long"/>
+                 <property name="valueType" value="com.gridgain.ps.k8s.igniteclient.Person"/>
+                 <property name="keyFieldName" value="id"/>
+                 <property name="keyFields">
+                   <list>
+                     <value>id</value>
+                  </list>
+                 </property>
+                 <property name="fields">
+                   <map>
+                     <entry key="id" value="java.lang.Long"/>
+                     <entry key="name" value="java.lang.String"/>
+                     <entry key="height" value="java.lang.Integer"/>
+                   </map>
+                 </property>
+               </bean>
+             </list>
+          </property>
+        </bean>
+      </list>
+    </property>
 
     <!-- GridGain configuration bean. -->
     <property name="pluginConfigurations">
@@ -52,8 +83,8 @@
                                     <map>
                                         <!-- server.cred credentials and associated permissions (everything is allowed) -->
                                         <entry key-ref="server.cred" value="{defaultAllow:true}"/>
-                                        <!-- client.cred credentials and associated permissions (only cache reads are allowed) -->
-                                        <entry key-ref="client.cred" value="{defaultAllow:false, {cache:'PERSON',permissions:['CACHE_READ','CACHE_PUT', 'CACHE_REMOVE', 'CACHE_CREATE']}}"/>
+                                        <!-- client.cred credentials and associated permissions -->
+                                        <entry key-ref="client.cred" value="{defaultAllow:false, {cache:'PERSON',permissions:['CACHE_READ','CACHE_PUT', 'CACHE_REMOVE']}, { system: [ 'ADMIN_CACHE' ]}}"/>
                                     </map>
                                 </constructor-arg>
                             </bean>

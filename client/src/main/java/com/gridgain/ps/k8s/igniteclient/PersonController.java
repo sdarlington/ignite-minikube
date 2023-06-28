@@ -1,6 +1,5 @@
 package com.gridgain.ps.k8s.igniteclient;
 
-import org.apache.ignite.client.IgniteClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,41 +9,25 @@ import org.springframework.web.bind.annotation.*;
 public class PersonController {
 
     @Autowired
-    private IgniteClient ignite;
+    PersonRepository personDao;
 
     @GetMapping("/")
     public ResponseEntity<PeopleEntity> index() {
-        var cache = ignite.getOrCreateCache("PERSON");
-        if (cache != null) {
-            return ResponseEntity.ok(new PeopleEntity(cache.size()));
-        }
-        else {
-            return ResponseEntity.noContent().build();
-        }
+        var cacheSize = personDao.count();
+        return ResponseEntity.ok(new PeopleEntity(cacheSize));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PersonEntity> person(@PathVariable Long id) {
-        var cache = ignite.<Long,Person>getOrCreateCache("PERSON");
-        if (cache != null) {
-            var person = cache.get(id);
-            if (person != null) {
-                return ResponseEntity.ok(new PersonEntity(id, person));
-            }
-            else {
-                return ResponseEntity.notFound().build();
-            }
-        }
-        else {
-            return ResponseEntity.noContent().build();
-        }
+        return personDao.findById(id)
+                .map(value -> ResponseEntity.ok(new PersonEntity(id, value)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/")
     public ResponseEntity<PersonEntity> create(@RequestBody PersonEntity person) {
-        var cache = ignite.<Long,Person>getOrCreateCache("PERSON");
-        if (cache != null) {
-            cache.put(person.getId(), person.person() );
+        var savedPerson = personDao.save(person.getId(), person.person());
+        if (savedPerson != null) {
             return ResponseEntity.ok(person);
         }
         else {
