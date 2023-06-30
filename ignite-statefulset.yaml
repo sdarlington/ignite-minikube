@@ -110,8 +110,18 @@ spec:
           httpGet:
             path: /ignite?cmd=version
             port: 8080
-          initialDelaySeconds: 30
+          initialDelaySeconds: 5
+          failureThreshold: 3
           periodSeconds: 10
+          timeoutSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ignite?cmd=probe
+            port: 8080
+          initialDelaySeconds: 5
+          failureThreshold: 3
+          periodSeconds: 10
+          timeoutSeconds: 10
   volumeClaimTemplates:
     - metadata:
         name: ignite-work
