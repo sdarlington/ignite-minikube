@@ -3,19 +3,9 @@ kind: Service
 metadata:
   # Name of Ignite Service used by Kubernetes IP finder. 
   # The name must be equal to TcpDiscoveryKubernetesIpFinder.serviceName.
-  name: ignite
+  name: ignite-headless
 spec:
-  type: LoadBalancer
-  ports:
-    - port: 11211 
-      name: tcp-control
-    - port: 10800
-      name: tcp-thinclient
-      targetPort: 10800
-    - port: 47100
-      name: tcp-communication
-    - port: 47500
-      name: tcp-discovery
+  clusterIP: None
   selector:
     # Must be equal to one of the labels set in Ignite pods'
     # deployement configuration.

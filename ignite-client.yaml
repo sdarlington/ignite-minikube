@@ -24,6 +24,7 @@ spec:
        env:
        - name: ignite-client.addresses
          value: ignite.ignite.svc.cluster.local:10800
+#          value: ignite-headless.ignite.svc.cluster.local:10800  # partition aware
        - name: ignite-client.username
          valueFrom:
            secretKeyRef:
