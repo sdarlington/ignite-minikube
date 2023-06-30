@@ -1,13 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  # Name of Ignite Service used by Kubernetes IP finder. 
-  # The name must be equal to TcpDiscoveryKubernetesIpFinder.serviceName.
   name: ignite-headless
 spec:
   clusterIP: None
   selector:
-    # Must be equal to one of the labels set in Ignite pods'
-    # deployement configuration.
     app: ignite
     type: server

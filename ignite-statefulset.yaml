@@ -1,11 +1,8 @@
-# An example of a Kubernetes configuration for Ignite pods deployment.
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  # Custom Ignite cluster's name.
   name: ignite
 spec:
-  # A number of Ignite pods to be started by Kubernetes initially.
   replicas: 2
   serviceName: "ignite"
   selector:
@@ -17,15 +14,10 @@ spec:
   template:
     metadata:
       labels:
-        # This label has to be added to the selector's section of 
-        # ignite-service.yaml so that the Kubernetes Ignite lookup service
-        # can easily track all Ignite pods available deployed so far.
         app: ignite
         type: server
     spec:
       volumes:
-        # Custom name for the storage that holds Ignite's configuration
-        # which is example-kube.xml.
         - name: ignite-config
           configMap:
             name: ignite-config
