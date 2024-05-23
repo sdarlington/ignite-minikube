@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: gridgain-control-center
+spec:
+  type: LoadBalancer
+  selector:
+    app: frontend
+  ports:
+   - name: http-control-center-web
+     port: 8008
+     protocol: TCP
+     targetPort: 8008

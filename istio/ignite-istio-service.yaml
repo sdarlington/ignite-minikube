@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  name: default
+  namespace: ignite
+spec:
+  hosts:
+  - ignite.svc.cluster.local
+  location: MESH_INTERNAL
+  resolution: NONE
+  ports:
+  - number: 47500
+    name: tcp-discovery
+    protocol: TCP
+  - number: 47100
+    name: tcp-communication
+    protocol: TCP
+  - number: 10800
+    name: tcp-thinclient
+    protocol: TCP

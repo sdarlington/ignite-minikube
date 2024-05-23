@@ -1,0 +1,29 @@
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  name: istio-frontend
+  namespace: gridgain-control-center
+spec:
+  hosts:
+  - frontend
+  location: MESH_INTERNAL
+  resolution: NONE
+  ports:
+  - number: 8008
+    name: tcp-frontend
+    protocol: HTTP
+---
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  name: istio-backend
+  namespace: gridgain-control-center
+spec:
+  hosts:
+  - backend
+  location: MESH_INTERNAL
+  resolution: NONE
+  ports:
+  - number: 3000
+    name: tcp-backend
+    protocol: TCP

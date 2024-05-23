@@ -1,0 +1,12 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: ratings-istio-mtls
+  namespace: ignite
+spec:
+  host: "ignite.svc.cluster.local"
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+
+

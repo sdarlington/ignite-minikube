@@ -1,0 +1,43 @@
+# An example of a Kubernetes configuration for Control Center pod deployment.
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: backend
+  namespace: gridgain-control-center
+spec:
+  replicas: 1
+  serviceName: backend
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      volumes:
+      - name: tmpfs
+        emptyDir: {}
+      containers:
+      - name: backend-container
+        image: gridgain/control-center-backend:2023.2
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+        env:
+        - name: JVM_OPTS
+          value: "-server -Djava.net.preferIPv4Stack=true -XX:+AlwaysPreTouch -XX:+UseG1GC -XX:+ScavengeBeforeFullGC -XX:+DisableExplicitGC -Djdk.tls.client.protocols=TLSv1.2"
+        volumeMounts:
+        - mountPath: /opt/gridgain-control-center/work
+          name: control-center-storage
+        - mountPath: /tmp
+          name: tmpfs
+  volumeClaimTemplates:
+    - metadata:
+        name: control-center-storage
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 10Gi
