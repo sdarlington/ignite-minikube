@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean id="opencensusWrapper" class="org.springframework.beans.factory.config.MethodInvokingBean">
+        <property name="staticMethod" value="io.opencensus.exporter.stats.prometheus.PrometheusStatsCollector.createAndRegister"/>
+    </bean>
+
+    <bean id="httpServer" class="io.prometheus.client.exporter.HTTPServer">
+        <constructor-arg type="java.lang.String" value="0.0.0.0"/>
+        <constructor-arg type="int" value="9002"/>
+        <constructor-arg type="boolean" value="true"/>
+    </bean>
+
+<bean id="ignite.cfg"
+    class="org.apache.ignite.configuration.IgniteConfiguration">
+
+    <property name="workDirectory" value="/ignite/work" />
+    <property name="shutdownPolicy" value="GRACEFUL" />
+
+    <!-- GridGain configuration bean. -->
+<!-->
+    <property name="pluginConfigurations">
+        <list>
+            <bean class="org.gridgain.grid.configuration.GridGainConfiguration">
+                <property name="rollingUpdatesEnabled" value="true"/>
+                <property name="licenseUrl" value="/ignite/licence/gridgain-license.xml"/>
+                <property name="dataCenterId" value="1"/>
+                <property name="snapshotConfiguration">
+                  <bean class="org.gridgain.grid.configuration.SnapshotConfiguration"/>
+                </property>
+            </bean>
+        </list>
+    </property>
+<!-->
+
+    <property name="dataStorageConfiguration">
+        <bean class="org.apache.ignite.configuration.DataStorageConfiguration">
+            <property name="metricsEnabled" value="true"/>
+            <property name="defaultWarmUpConfiguration">
+                <bean class="org.apache.ignite.configuration.LoadAllWarmUpConfiguration"/>
+            </property>
+            <property name="defaultDataRegionConfiguration">
+                <bean class="org.apache.ignite.configuration.DataRegionConfiguration">
+                    <property name="persistenceEnabled" value="true"/>
+                    <property name="metricsEnabled" value="true"/>
+                </bean>
+            </property>
+        </bean>
+    </property>
+
+        <property name="metricExporterSpi">
+          <list>
+            <bean class="org.apache.ignite.spi.metric.opencensus.OpenCensusMetricExporterSpi">
+              <property name="period" value="1000" />
+            </bean>
+          </list>
+        </property>
+
+<!-->
+    <property name="tracingSpi">
+      <bean id="opencensus" class="org.apache.ignite.spi.tracing.opencensus.OpenCensusTracingSpi"/>
+    </property>
+<!-->
+
+    <property name="discoverySpi">
+        <bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
+        		<property name="ipFinder">
+            		<bean
+class="org.apache.ignite.spi.discovery.tcp.ipfinder.kubernetes.TcpDiscoveryKubernetesIpFinder">
+                      <property name="namespace" value="ignite"/>
+                      <property name="masterUrl" value="https://10.96.0.1:443"/>
+
+            		</bean>
+<!-->
+
+ <bean class="org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder">
+                    <property name="addresses">
+                        <list>
+<value>ignite.svc.cluster.local</value>
+                        </list>
+                    </property>
+                </bean>
+<!-->
+            </property>
+        </bean>
+    </property>
+</bean>
+</beans>

@@ -1,0 +1,34 @@
+# An example of a Kubernetes configuration for Ignite pods deployment.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: prometheus
+spec:
+  replicas: 1
+  #serviceName: "prometheus"
+  selector:
+    matchLabels:
+      app: prometheus
+  #updateStrategy:
+  #  type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      volumes:
+        - name: prometheus-config
+          configMap:
+            name: prometheus-config
+            items:
+            - key: prometheus.yml
+              path: prometheus.yml
+      containers:
+      - name: prometheus-node
+        image: prom/prometheus
+        ports:
+        - containerPort: 9090
+        volumeMounts:
+        - mountPath: /etc/prometheus
+          name: prometheus-config
