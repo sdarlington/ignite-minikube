@@ -26,6 +26,13 @@ Since the cluster is persistent, you'll need to activate the cluster. The simple
 option is to use Control Center. You can also `exec` into one of the pods and run
 `control.sh`.
 
+## Build the client
+
+```
+cd client
+mvn spring-boot:build-image
+```
+
 ## Start the client
 
 The client is a SpringBoot/SpringData application that connects to the GridGain
@@ -37,11 +44,20 @@ servers as a thin-client. After you've built the image and uploaded it to a regi
 kubectl apply -f ignite-client.yaml -n ignite
 ```
 
+Make the client available outside your Kubernetes environment. How to do that is
+going to vary depending on your deployment platform.
+
+Certainly not a production-ready option, but this might work:
+
+```
+kubectl port-forward -n ignite deployment/ignite-client 8080:80
+```
+
 Example calling the client program, using [httpie](https://httpie.io/cli):
 
 ```
 $ http POST http://localhost/person/ id=10 name=Jeremy height=180
-HTTP/1.1 200 
+HTTP/1.1 200
 Connection: keep-alive
 Content-Type: application/json
 Date: Wed, 07 Jun 2023 16:59:01 GMT
@@ -56,7 +72,7 @@ Transfer-Encoding: chunked
 
 
 $ http http://localhost/person/10
-HTTP/1.1 200 
+HTTP/1.1 200
 Connection: keep-alive
 Content-Type: application/json
 Date: Wed, 07 Jun 2023 16:59:11 GMT
