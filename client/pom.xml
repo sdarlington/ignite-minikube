@@ -17,6 +17,7 @@
 		<java.version>11</java.version>
 		<gridgain.version>8.9.20</gridgain.version>
 		<ignite-spring-data-ext.version>2.0.0</ignite-spring-data-ext.version>
+		<ignite-spring-autoconfigure-ext.version>1.0.0</ignite-spring-autoconfigure-ext.version>
 	</properties>
 	<repositories>
 		 <repository>
@@ -48,8 +49,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.ignite</groupId>
-		  <artifactId>ignite-spring-boot-thin-client-autoconfigure-ext</artifactId>
-		  <version>1.0.0</version>
+		    <artifactId>ignite-spring-boot-thin-client-autoconfigure-ext</artifactId>
+		    <version>${ignite-spring-autoconfigure-ext.version}</version>
 		</dependency>
 		<dependency>
 			 <groupId>org.gridgain</groupId>
