@@ -4,6 +4,7 @@ metadata:
   name: ignite-headless
 spec:
   clusterIP: None
+  publishNotReadyAddresses: true
   selector:
     app: ignite
     type: server

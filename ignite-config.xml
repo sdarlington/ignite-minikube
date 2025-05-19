@@ -162,8 +162,12 @@
         <bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
         		<property name="ipFinder">
             		<bean
-class="org.apache.ignite.spi.discovery.tcp.ipfinder.kubernetes.TcpDiscoveryKubernetesIpFinder">
-                      <property name="namespace" value="ignite"/>
+class="org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder">
+                      <property name="addresses">
+                        <list>
+                          <value>ignite-headless.ignite.svc.cluster.local</value>
+                        </list>
+                      </property>
             		</bean>
             </property>
         </bean>

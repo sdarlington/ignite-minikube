@@ -47,7 +47,7 @@ spec:
         - name: JVM_OPTS
           value: -server -Djava.net.preferIPv4Stack=true -XX:+AlwaysPreTouch -XX:+UseG1GC -XX:+ScavengeBeforeFullGC -XX:+DisableExplicitGC -Djdk.tls.client.protocols=TLSv1.2
         - name: OPTION_LIBS
-          value: ignite-kubernetes,ignite-rest-http,control-center-agent
+          value: ignite-rest-http,control-center-agent
         - name: CONFIG_URI
           value: file:///ignite/config/ignite-config.xml
         - name: IGNITE_NODE_HOSTNAME
