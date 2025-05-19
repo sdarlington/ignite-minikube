@@ -33,7 +33,7 @@ spec:
       terminationGracePeriodSeconds: 60000
       containers:
       - name: ignite-node
-        image: gridgain/ultimate:8.8.30-openjdk17-slim
+        image: gridgain/ultimate:8.9.20-openjdk17-slim
         resources:
           limits:
             memory: 1536Mi
