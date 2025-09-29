@@ -14,17 +14,20 @@ Create the cluster in the "ignite" namespace with the following commands.
 
 ```
 kubectl apply -f ignite-namespace.yaml
-kubectl create -f ignite-service.yaml -n ignite
-kubectl create -f ignite-serviceaccount.yaml -n ignite
-kubectl create configmap ignite-config --from-file=ignite-config.xml -n ignite
-kubectl create configmap ignite-licence --from-file=gridgain-license.xml -n ignite
-kubectl apply -n ignite -f ignite-credentials.yaml
-kubectl apply -f ignite-statefulset.yaml -n ignite
+kubectl create configmap gridgain-config -n ignite --from-file=gridgain-config.conf
+kubectl create configmap gridgain-license -n ignite --from-file=gridgain-license.json
+kubectl apply -f ignite-service.yaml -n ignite
+kubectl apply -f ignite-service-headless.yaml -n ignite
+kubectl apply -f ignite-statefulset.yaml
 ```
 
-Since the cluster is persistent, you'll need to activate the cluster. The simplest
-option is to use Control Center. You can also `exec` into one of the pods and run
-`control.sh`.
+You'll need to activate the cluster. The simplest option is to use Control Center. You can also `exec` into one of the pods and run the following command:
+
+```
+cluster init --name=gridgain9-k8s --metastorage-group=gridgain-cluster-0,gridgain-cluster-1 --license=/opt/gridgain/etc/gridgain-license.json
+```
+
+(Also see the docs for a Kubernetes job.)
 
 ## Build the client
 

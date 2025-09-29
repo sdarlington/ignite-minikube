@@ -1,19 +1,20 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: ignite
+  name: gridgain-loadbalancer
+  labels:
+    app: gridgain
+  namespace: ignite
 spec:
   type: LoadBalancer
-  ports:
-    - port: 11211 
-      name: tcp-control
-    - port: 10800
-      name: tcp-thinclient
-      targetPort: 10800
-    - port: 47100
-      name: tcp-communication
-    - port: 47500
-      name: tcp-discovery
   selector:
-    app: ignite
-    type: server
+    app: gridgain
+  ports:
+    - name: rest
+      protocol: TCP
+      port: 10800
+      targetPort: 10800
+    - name: client
+      port: 10300
+      protocol: TCP
+      targetPort: 10300

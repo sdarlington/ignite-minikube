@@ -1,10 +1,33 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: ignite-headless
+  # The name must be equal to netClusterNodes.
+  name: gridgain-svc-headless
+  # Place your namespace name here.
+  namespace: ignite
 spec:
   clusterIP: None
-  publishNotReadyAddresses: true
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: management
+    port: 10300
+    protocol: TCP
+    targetPort: 10300
+  - name: rest
+    port: 10800
+    protocol: TCP
+    targetPort: 10800
+  - name: cluster
+    port: 3344
+    protocol: TCP
+    targetPort: 3344
   selector:
-    app: ignite
-    type: server
+    # Must be equal to the label set for pods.
+    app: gridgain
+  # Include not-yet-ready nodes.
+  publishNotReadyAddresses: True
+  sessionAffinity: None
+  type: ClusterIP
