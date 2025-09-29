@@ -48,8 +48,9 @@ spec:
           # GridGain 9 working directory.
           - name: GRIDGAIN_WORK_DIR
             value: /gg9-work
+          # the CLI needs a writable directory. won't be needed after IGNITE-26538
           - name: GRIDGAIN9_OPTS
-            value: -Duser.home=/tmp
+            value: -Duser.home=/gg9-work
         # GridGains Docker image and it's version.
         image: gridgain/gridgain9:9.1.9
         securityContext:
