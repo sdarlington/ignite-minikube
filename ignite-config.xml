@@ -64,11 +64,13 @@
                 <property name="rollingUpdatesEnabled" value="true"/>
                 <property name="licenseUrl" value="/ignite/licence/gridgain-license.xml"/>
                 <property name="dataCenterId" value="1"/>
+                <!-->
                 <property name="snapshotConfiguration">
                   <bean class="org.gridgain.grid.configuration.SnapshotConfiguration">
                       <property name="snapshotsPath" value="/ignite/snapshots"/>
                   </bean>
                 </property>
+                <!-->
                 <property name="securityCredentialsProvider">
                     <bean class="org.apache.ignite.plugin.security.SecurityCredentialsBasicProvider">
                         <constructor-arg ref="server.cred"/>
