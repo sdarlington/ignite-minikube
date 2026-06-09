@@ -15,6 +15,7 @@ Create the cluster in the "ignite" namespace with the following commands.
 ```
 kubectl apply -f ignite-namespace.yaml
 kubectl create -f ignite-service.yaml -n ignite
+kubectl create -f ignite-service-headless.yaml -n ignite
 kubectl create -f ignite-serviceaccount.yaml -n ignite
 kubectl create configmap ignite-config --from-file=ignite-config.xml -n ignite
 kubectl create configmap ignite-licence --from-file=gridgain-license.xml -n ignite
