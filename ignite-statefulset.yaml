@@ -123,9 +123,6 @@ spec:
         resources:
           requests:
             storage: 512Mi
-        selector:
-          matchLabels:
-            app: ignite
     - metadata:
         name: ignite-storage
       spec:
@@ -133,9 +130,6 @@ spec:
         resources:
           requests:
             storage: 5Gi
-        selector:
-          matchLabels:
-            app: ignite
     - metadata:
         name: ignite-wal
       spec:
@@ -143,9 +137,6 @@ spec:
         resources:
           requests:
             storage: 1Gi
-        selector:
-          matchLabels:
-            app: ignite
     - metadata:
         name: ignite-walarchive
       spec:
@@ -153,9 +144,6 @@ spec:
         resources:
           requests:
             storage: 3Gi
-        selector:
-          matchLabels:
-            app: ignite
     - metadata:
         name: ignite-snapshots
       spec:
@@ -163,6 +151,3 @@ spec:
         resources:
           requests:
             storage: 5Gi
-        selector:
-          matchLabels:
-            app: ignite
