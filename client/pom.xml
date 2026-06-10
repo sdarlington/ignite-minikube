@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.5</version>
+		<version>3.5.14</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.gridgain.ps.k8s</groupId>
@@ -15,7 +15,7 @@
 	<description>Spring Boot Ignite Client</description>
 	<properties>
 		<java.version>17</java.version>
-		<gridgain.version>8.9.20</gridgain.version>
+		<gridgain.version>8.9.33</gridgain.version>
 		<ignite-spring-data-ext.version>2.0.0</ignite-spring-data-ext.version>
 		<ignite-spring-autoconfigure-ext.version>2.0.0</ignite-spring-autoconfigure-ext.version>
         <spring-boot.run.jvmArguments>-Dfile.encoding=UTF-8 --add-opens=java.base/jdk.internal.misc=ALL-UNNAMED
