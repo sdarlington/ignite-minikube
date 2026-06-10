@@ -24,10 +24,6 @@ spec:
             items:
             - key: ignite-config.xml
               path: ignite-config.xml
-        - name: ignite-licence
-          configMap:
-            name: ignite-licence
-            items:
             - key: gridgain-license.xml
               path: gridgain-license.xml
       terminationGracePeriodSeconds: 60000
@@ -95,8 +91,6 @@ spec:
           name: ignite-wal
         - mountPath: /ignite/walarchive
           name: ignite-walarchive
-        - mountPath: /ignite/licence
-          name: ignite-licence
         - mountPath: /ignite/snapshots
           name: ignite-snapshots
         livenessProbe:
