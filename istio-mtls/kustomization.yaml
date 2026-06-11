@@ -3,3 +3,6 @@ kind: Component
 
 resources:
   - peerauth.yaml
+
+resources:
+  - ignite-client-gateway.yaml

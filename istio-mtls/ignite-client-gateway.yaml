@@ -1,0 +1,33 @@
+apiVersion: networking.istio.io/v1
+kind: Gateway
+metadata:
+  name: ignite-client-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: SIMPLE
+        credentialName: ignite-client-tls
+      hosts:
+        - "*"
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: ignite-client
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - ignite-client-gateway
+  http:
+    - route:
+        - destination:
+            host: ignite-client.ignite.svc.cluster.local
+            port:
+              number: 80

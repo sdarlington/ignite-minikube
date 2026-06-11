@@ -125,3 +125,29 @@ Transfer-Encoding: chunked
 ### LinkerD
 
 To run the cluster with mTLS between the various components, install linkerd and uncomment the lines in kustomization.yaml before you deploy the cluster.
+
+### Istio
+
+To run the cluster with mTLS between the various components, install Istio and uncomment the lines in kustomization.yaml before you deploy the cluster. If you enable port-forwarding, you can hit the REST endpoint using a secure connection.
+
+```
+kubectl -n istio-system port-forward svc/istio-ingressgateway 8443:443
+```
+
+Result:
+
+```
+% http --verify=no https://localhost:8443/person/
+HTTP/1.1 200 OK
+content-type: application/json
+date: Thu, 11 Jun 2026 13:32:11 GMT
+server: istio-envoy
+transfer-encoding: chunked
+x-envoy-upstream-service-time: 124
+
+{
+    "count": 1
+}
+```
+
+(Since it uses a self-signed certificate, you have to turn off validation.)
