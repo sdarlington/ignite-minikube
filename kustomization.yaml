@@ -12,7 +12,37 @@ resources:
   - ignite-statefulset.yaml
 #   - ignite-client.yaml
 
-# patches:
+# Uncomment to enable Istio
+components:
+  - ./istio-mtls
+
+patches:
+  - target:
+      kind: Namespace
+      name: ignite
+    patch: |-
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: ignite
+        labels:
+          istio-injection: enabled
+  - target:
+      kind: StatefulSet
+      name: ignite
+    patch: |-
+      apiVersion: apps/v1
+      kind: StatefulSet
+      metadata:
+        name: ignite
+      spec:
+        template:
+          metadata:
+            annotations:
+              proxy.istio.io/config: |
+                holdApplicationUntilProxyStarts: true
+          
+# Uncomment to enable LinkerD
 #   - target:
 #       kind: StatefulSet
 #       name: ignite

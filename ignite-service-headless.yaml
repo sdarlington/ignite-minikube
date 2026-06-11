@@ -5,6 +5,13 @@ metadata:
 spec:
   clusterIP: None
   publishNotReadyAddresses: true
+  ports:
+    - port: 10800
+      name: tcp-thinclient
+    - port: 47100
+      name: tcp-communication
+    - port: 47500
+      name: tcp-discovery
   selector:
     app: ignite
     type: server
